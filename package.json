@@ -1,0 +1,17 @@
+{
+  "name": "openq-invoice-server",
+  "version": "1.0.0",
+  "description": "Invoice server written in typescript that provides pdf's for preview via http and emails pdfs to relevant parties.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "start:dev": "nodemon index.js",
+    "test": "jest"
+  },
+  "author": "Christopher-Stevers",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2"
+  }
+}
