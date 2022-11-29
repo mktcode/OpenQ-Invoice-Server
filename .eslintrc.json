@@ -1,0 +1,37 @@
+{	
+
+	"extends": [
+		"eslint:recommended",
+		"prettier"
+	],
+	
+	"parser":  "@typescript-eslint/parser", // Specifies the ESLint parser
+  
+	
+  
+	"parserOptions": {
+		"requireConfigFile": false,
+  
+		"ecmaVersion": 2022, // Allows for the parsing of modern ECMAScript features
+	
+		"sourceType": "module"// Allows for the use of imports
+	},
+	"plugins": [
+		"unused-imports",
+		"prettier"
+	],
+	"rules": {
+		"no-async-promise-executor": "off",
+		"no-inner-declarations": "off",
+		"no-useless-catch": "off",
+		"no-useless-escape": "off",
+		"linebreak-style": 0,
+		"no-loss-of-precision": "off",
+		"semi": [
+			"error",
+			"always"
+		],
+		"prettier/prettier": "error"
+	
+}
+}
