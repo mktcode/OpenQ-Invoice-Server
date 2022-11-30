@@ -40,10 +40,10 @@ const createPdf = async (
     doc.text(clientData.email, leftPadding, (topPadding += 16));
     doc.text(freelancerData.email, 400, topPadding);
     doc.text(clientData.streetAddress, leftPadding, (topPadding += 16));
-    doc.text(freelancerData.phoneNumber, 400, topPadding);
 
     doc.text(clientData.country, leftPadding, (topPadding += 16));
-    doc.text(freelancerData.streetAddress, 400, topPadding);
+    doc.text(freelancerData.phoneNumber, 400, topPadding);
+    doc.text(freelancerData.streetAddress, 400, (topPadding += 16));
     doc.text(freelancerData.postalCode, 400, (topPadding += 16));
     doc.text(freelancerData.country, 400, (topPadding += 16));
     const taxId = `Tax number: ${freelancerData.taxId}`;
@@ -70,8 +70,9 @@ const createPdf = async (
 
       prepareRow: (_row: string[], _indexColumn: number, indexRow: number, rectRow: any) => {
         const correctRow = { ...rectRow, x: parseInt(rectRow.x) - 12, y: parseInt(rectRow.y) - 8 };
-
+        console.log(correctRow);
         doc.font('Helvetica').moveDown();
+        console.log(0 === indexRow);
 
         if (indexRow === 0) {
           doc.addBackground(correctRow, 'grey');
@@ -87,7 +88,7 @@ const createPdf = async (
 
     doc.text(freelancerData.memo, leftPadding, (topPadding += 210)).font('Helvetica-Bold');
 
-    doc.text('Eth address:', leftPadding, (topPadding += 230)).font('Helvetica');
+    doc.text('Eth address:', leftPadding, (topPadding += 100)).font('Helvetica');
 
     doc.text(freelancerAddress, leftPadding + 80, topPadding).font('Helvetica-Bold');
 
