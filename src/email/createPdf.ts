@@ -1,12 +1,15 @@
 import PDFDocument from 'pdfkit-table';
+import createTable from './createTable.js';
 
 import fs from 'fs';
+//import getToken from './getToken.js';
 
 const createPdf = async (
-  _invoiceReceivers: any,
-
-  _invoiceSender: any,
-  invoiceData: any
+  tokenBalances: TokenBalance[],
+  freelancerData: User,
+  clientData: User,
+  freelancerAddress: string,
+  depositId: string
 ) => {
   return new Promise(async (resolve, _reject) => {
     // Create a document
@@ -15,54 +18,85 @@ const createPdf = async (
 
     // Pipe its output somewhere, like to a file or HTTP response
     // See below for browser usage
-    doc.pipe(fs.createWriteStream('output.pdf'));
-    const getUSDValue = (_tokenAddress: string, _volume: string) => {
-      return 4.56;
-    };
-    interface tokenBalance {
-      tokenAddress: string;
-      volume: string;
-    }
-    const headers = ['Token', 'Volume', 'USD'];
+    doc.pipe(fs.createWriteStream(`./tmp/${depositId}.pdf`));
 
-    // Embed a font, set the font size, and render some text
-    const table = {
-      headers,
-      rows: invoiceData.map((elem: tokenBalance) => [
-        elem.tokenAddress,
-        elem.volume,
-        `$${getUSDValue(elem.tokenAddress, elem.volume)}`,
-      ]),
-    };
+    //can't handle multiple balances of the same token.
+    //For now this doesn't matter as we are only doing one deposit at a time.
+
     //const lorem =     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
     // the magic (async/await)
-    let pl = 0;
     doc.fontSize(18);
     doc.fillColor('#000000');
-    doc.font('Helvetica');
-    doc.text('Christopher Stevers', 20, (pl += 20));
+    const leftPadding = 60;
+    let topPadding = 40;
+    doc.font('Helvetica-Bold');
+    const invoiceNumber = `Invoice No. ${freelancerData.invoiceNumber.toString()}`;
+    doc.text(invoiceNumber, leftPadding, (topPadding += 10));
     doc.fontSize(12);
-    doc.text('October 12, 2020', 400, pl);
-    doc.text('5146 Perth line 44', 20, (pl += 20));
-    doc.text('christopher.stevers1@gmail.com', 20, (pl += 16));
-    doc.text('Bill to:', 20, (pl += 20));
-    doc.text('openqdev', 20, (pl += 6));
-    doc.text('55 rheinsberger drive', 20, (pl += 6));
-    doc.text('rick@openq.dev', 20, (pl += 6));
+    doc.text(clientData.billingName, leftPadding, (topPadding += 40));
+    doc.text(freelancerData.billingName, 400, topPadding);
 
-    await doc.table(table, {
-      /* options */
+    doc.font('Helvetica');
+    doc.text(clientData.email, leftPadding, (topPadding += 16));
+    doc.text(freelancerData.email, 400, topPadding);
+    doc.text(clientData.streetAddress, leftPadding, (topPadding += 16));
+    doc.text(freelancerData.phoneNumber, 400, topPadding);
+
+    doc.text(clientData.country, leftPadding, (topPadding += 16));
+    doc.text(freelancerData.streetAddress, 400, topPadding);
+    doc.text(freelancerData.postalCode, 400, (topPadding += 16));
+    doc.text(freelancerData.country, 400, (topPadding += 16));
+    const taxId = `Tax number: ${freelancerData.taxId}`;
+    doc.text(taxId, 400, (topPadding += 16));
+    const date = new Date();
+    const dateStr = `Date: ${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
+    doc.text(dateStr, leftPadding, (topPadding += 16));
+    const dueDateStr = `Due Date: ${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
+    doc.text(dueDateStr, leftPadding, (topPadding += 16));
+    doc.text('', leftPadding, (topPadding += 16));
+
+    doc.moveDown();
+
+    const table = await createTable(tokenBalances, freelancerData);
+    const { rows } = table;
+    doc.table(table, {
+      hideHeader: true,
+      minRowHeight: 30,
+      x: leftPadding + 12,
+      divider: {
+        header: { disabled: false, width: 2, opacity: 1 },
+        horizontal: { disabled: true, width: 0.5, opacity: 0.5 },
+      },
+
+      prepareRow: (_row: string[], _indexColumn: number, indexRow: number, rectRow: any) => {
+        const correctRow = { ...rectRow, x: parseInt(rectRow.x) - 12, y: parseInt(rectRow.y) - 8 };
+
+        doc.font('Helvetica').moveDown();
+
+        if (indexRow === 0) {
+          doc.addBackground(correctRow, 'grey');
+          doc.fontSize(16).moveDown(5);
+        } else {
+          doc.fontSize(12);
+        }
+        if (indexRow === rows.length - 1) {
+          doc.addBackground(correctRow, 'grey');
+        }
+      },
     });
-    // -- or --
-    // doc.table(table).then(() => { doc.end() }).catch((err) => { })
 
-    // if your run express.js server
-    // to show PDF on navigator
-    // doc.pipe(res);
+    doc.text(freelancerData.memo, leftPadding, (topPadding += 210)).font('Helvetica-Bold');
 
-    // Finalize PDF file
-    const val = doc.end();
-    resolve(val);
+    doc.text('Eth address:', leftPadding, (topPadding += 230)).font('Helvetica');
+
+    doc.text(freelancerAddress, leftPadding + 80, topPadding).font('Helvetica-Bold');
+
+    doc.text('VAT number:', leftPadding, (topPadding += 16)).font('Helvetica');
+
+    doc.text(freelancerData.vatNumber, leftPadding + 80, topPadding);
+
+    doc.end();
+    resolve(doc);
   });
 };
 

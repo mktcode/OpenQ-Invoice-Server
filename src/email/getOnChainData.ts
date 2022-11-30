@@ -2,7 +2,20 @@ import axios, { AxiosResponse } from 'axios';
 
 import GET_BOUNTY from '../graphql/getBounty.js';
 
-const getOnChainData = async (address: string, subgraphUrl: string) => {
+interface Deposit {
+  id: string;
+  volume: string;
+  tokenAddress: string;
+  sender: {
+    id: string;
+  };
+}
+
+interface Bounty {
+  deposits: Deposit[];
+}
+
+const getOnChainData = async (address: string) => {
   /**
    *
    * @param {*} sortOrder
@@ -11,19 +24,18 @@ const getOnChainData = async (address: string, subgraphUrl: string) => {
    * @returns
    */
 
-  return new Promise(async (resolve, _reject) => {
-    try {
-      const result: AxiosResponse = await axios.post(`${subgraphUrl}`, {
-        query: GET_BOUNTY,
-        variables: { address: address },
-      });
-      resolve(result.data);
-    } catch (e) {
-      if (e instanceof Error) {
-        console.log(e.message);
-      }
-    }
-  });
+  try {
+    const lowerCaseAddress = address.toLowerCase();
+    const url: string = process.env['OPENQ_SUBGRAPH_HTTP_URL']!;
+    const result: AxiosResponse = await axios.post(url, {
+      query: GET_BOUNTY,
+      variables: { address: lowerCaseAddress },
+    });
+    const bounty = result.data.data.bounty as Bounty;
+    return bounty;
+  } catch (err: any) {
+    throw new Error(err);
+  }
 };
 
 export default getOnChainData;

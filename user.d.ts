@@ -13,4 +13,9 @@ interface User {
   vatNumber: string;
   vatRate: number;
   memo: string;
+  github: string;
+  twitter: string;
+  discord: string;
+  watchedBountyIds: string[];
+  postalCode: string;
 }

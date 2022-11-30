@@ -3,11 +3,27 @@ const GET_USER = `
 		$address: String!
 	) {
   user(address: $address){  
-    company
-    country
-    province
-    address
-    email    
+	watchedBountyIds
+	github
+	address
+	email
+	company
+	email
+	city
+	streetAddress
+	country
+	province
+	discord
+	github
+	twitter
+	postalCode
+	billingName
+	invoiceNumber
+	phoneNumber
+	taxId
+	vatNumber
+	vatRate
+	memo    
   }
   
   

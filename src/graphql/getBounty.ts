@@ -4,6 +4,7 @@ const GET_BOUNTY = `
 	)   {
   bounty(id:$address){
     deposits{
+		id
       sender{id}
       tokenAddress
       volume

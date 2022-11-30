@@ -7,39 +7,32 @@ const server = () => {
   dotenv.config();
 
   const app: Express = express();
-  const port = process.env['PORT'];
+  const port: string = process.env['PORT']!;
 
   app.get('/', (_req: Request, res: Response) => {
     res.send('Express + TypeScript Server');
   });
-
-  // expects bountyId, bountyAddress,
-  app.post('/email', (_req: Request, res: Response) => {
-    const issueId = 'I_kwDOGWnnz85WLs-i';
-    const user = {
-      address: '0xa7b7DcBb35A58294Ba9E51cC9AA20670E124536b',
-      company: 'OpenQ',
-      billingName: 'Christopher Stevers',
-      city: 'Gadshill',
-      streetAddress: '4156 Perth line 44',
-      country: 'Canada',
-      phoneNumber: '519-393-6855',
-      province: 'Alberta',
-      email: 'christopher.stevers1@gmail.com',
-      invoiceNumber: 4,
-      taxId: '3123423',
-      vatNumber: '212342134',
-      vatRate: 23.23,
-      memo: 'high tax',
+  app.post('/email', (_req: Request, _res: Response) => {
+    const body = {
+      bountyId: 'I_kwDOGWnnz85Utn1m',
+      bountyAddress: '0x001192fa1ea7a2816445ec2efd5843c1a60562aa',
+      organization: 'MDEyOk9yZ2FuaXphdGlvbjc3NDAyNTM4',
+      closer: '0xa7b7DcBb35A58294Ba9E51cC9AA20670E124536b',
+      payoutTime: { type: 'BigNumber', hex: '0x63861f57' },
+      tokenAddress: '0x0000000000000000000000000000000000000000',
+      volume: { type: 'BigNumber', hex: '0x4563918244f40000' },
+      bountyType: { type: 'BigNumber', hex: '0x00' },
+      data: '0x000000000000000000000000001192fa1ea7a2816445ec2efd5843c1a60562aa000000000000000000000000000000000000000000000000000000000000008000000000000000000000000090f79bf6eb2c4f870365e785982e1f101e93b90600000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000000134368726973746f706865722d5374657665727300000000000000000000000000000000000000000000000000000000000000000000000000000000000000003368747470733a2f2f6769746875622e636f6d2f4f70656e514465762f4f70656e512d546573745265706f2f70756c6c2f36383900000000000000000000000000',
+      version: { type: 'BigNumber', hex: '0x01' },
     };
-    const body = { issueId, user };
 
-    const baseUrl = 'http://localhost:4000';
-    email(user, issueId, baseUrl);
-    res.send('Express + TypeScript Server');
+    email(body);
   });
+
+  app.post('/sample', (_req: Request, _res: Response) => {});
+
   app.listen(port, () => {
-    console.log(`⚡️[server]: Server is running at https://localhost:${port}`);
+    console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
   });
 };
 

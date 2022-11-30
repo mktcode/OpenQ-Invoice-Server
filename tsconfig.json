@@ -2,10 +2,8 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Node 18 + ESM + Strictest",
   "compilerOptions": {
-    "lib": [
-      "es2022"
-    ],
-    "module": "es2022",
+    "lib": ["es2022"],
+    "module": "esnext",
     "target": "es2022",
     "strict": true,
     "esModuleInterop": true,
@@ -23,11 +21,13 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "importsNotUsedAsValues": "error",
+    "resolveJsonModule": true,
     "checkJs": true
   },
-  
-    "ts-node": {
-        // Tell ts-node CLI to install the --loader automatically
-        "esm": true
-    }
+
+  "ts-node": {
+    "resolveJsonModule": true,
+    // Tell ts-node CLI to install the --loader automatically
+    "esm": true
+  }
 }
