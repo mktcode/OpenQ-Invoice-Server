@@ -2,6 +2,7 @@
 import getOnChainData from './getOnChainData.js';
 import sendInvoice from './sendInvoice.js';
 import { ethers } from 'ethers';
+import type { Response } from 'express';
 
 interface ClaimEvent {
   bountyId: string;
@@ -26,7 +27,7 @@ interface Deposit {
 }
 
 // async..await is not allowed in global scope, must use a wrapper
-async function email(body: ClaimEvent) {
+async function email(body: ClaimEvent, res: Response) {
   const issueId = body.bountyAddress;
 
   const abiCoder = new ethers.utils.AbiCoder();
@@ -35,7 +36,7 @@ async function email(body: ClaimEvent) {
   const getData = async (issueId: string) => {
     const onChainData = await getOnChainData(issueId);
     onChainData.deposits.forEach((deposit: Deposit) => {
-      sendInvoice(deposit, githubUser, body.closer);
+      sendInvoice(deposit, githubUser, body.closer, res);
     });
     return { ...onChainData };
   };

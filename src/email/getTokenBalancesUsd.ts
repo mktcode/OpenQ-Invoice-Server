@@ -16,7 +16,7 @@ const getTokenBalancesUsd = async (tokenBalances: TokenBalance[]): Promise<Price
     tokenVolumes[tokenAddress as keyof typeof tokenVolumes].volume = tokenBalance.volume;
   }
   const data = { tokenVolumes, network: 'polygon-pos' };
-  const url = 'http://localhost:8081' + '/tvl';
+  const url = `${process.env['OPENQ_COINAPI_URL']}:8081` + '/tvl';
   const tokenValues: Prices = await getTokenValues(data, url);
   return tokenValues;
 };

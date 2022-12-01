@@ -1,7 +1,8 @@
+import type { Response } from 'express';
 import fs from 'fs';
 import nodemailer from 'nodemailer';
 
-const sendPdf = async (clientData: User, freelancerData: User, depositId: string) => {
+const sendPdf = async (clientData: User, freelancerData: User, depositId: string, res: Response) => {
   let transporter = nodemailer.createTransport({
     host: 'mail.privateemail.com',
     port: 465,
@@ -30,8 +31,8 @@ const sendPdf = async (clientData: User, freelancerData: User, depositId: string
       from: process.env['EMAIL_USERNAME'], // sender address
       to: freelancerData.email, // list of receivers
       subject: 'Invoice', // Subject line
-      text: 'Here is an invoice for work completed for you on OpenQ.', // plain text body
-      html: '<p>Here is your invoice for work completed on OpenQ.</p>',
+      text: `Here is a copy of your invoice sent to ${clientData.email} for work completed by you on OpenQ.`, // plain text body
+      html: `<p>Here is a copy of your invoice sent to ${clientData.email} for work completed by you on OpenQ.</p>`,
       attachments: [
         {
           filename: `invoice_${freelancerData.invoiceNumber}.pdf`,
@@ -48,6 +49,7 @@ const sendPdf = async (clientData: User, freelancerData: User, depositId: string
         return;
       }
     });
+    res.json({ message: 'Email sent' });
   } catch (e) {
     console.log(e);
   }
