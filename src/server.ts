@@ -17,8 +17,11 @@ const server = () => {
   });
   app.post('/email', jsonParser, (req: Request, res: Response) => {
     const { body } = req;
-
-    email(body, res);
+    try {
+      email(body, res);
+    } catch (e) {
+      console.log(e, 'could not send email');
+    }
   });
   app.get('/preview', jsonParser, async (req, res) => {
     const account: string = req.query['account'] as string;
@@ -35,7 +38,11 @@ const server = () => {
       data: '0x000000000000000000000000001192fa1ea7a2816445ec2efd5843c1a60562aa000000000000000000000000000000000000000000000000000000000000008000000000000000000000000090f79bf6eb2c4f870365e785982e1f101e93b90600000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000000134368726973746f706865722d5374657665727300000000000000000000000000000000000000000000000000000000000000000000000000000000000000003368747470733a2f2f6769746875622e636f6d2f4f70656e514465762f4f70656e512d546573745265706f2f70756c6c2f36383900000000000000000000000000',
       version: { type: 'BigNumber', hex: '0x01' },
     };
-    await sample(body, res);
+    try {
+      await sample(body, res);
+    } catch (e) {
+      console.log(e, 'could not produce preview');
+    }
   });
 
   app.listen(port, () => {
