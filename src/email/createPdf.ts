@@ -30,7 +30,7 @@ const createPdf = async (
     const leftPadding = 60;
     let topPadding = 40;
     doc.font('Helvetica-Bold');
-    const invoiceNumber = `Invoice No. ${freelancerData.invoiceNumber.toString()}`;
+    const invoiceNumber = `Invoice No. ${freelancerData.invoiceNumber?.toString()}`;
     doc.text(invoiceNumber, leftPadding, (topPadding += 10));
     doc.fontSize(12);
     doc.text(clientData.billingName, leftPadding, (topPadding += 40));

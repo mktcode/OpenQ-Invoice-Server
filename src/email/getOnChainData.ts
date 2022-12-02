@@ -2,19 +2,6 @@ import axios, { AxiosResponse } from 'axios';
 
 import GET_BOUNTY from '../graphql/getBounty.js';
 
-interface Deposit {
-  id: string;
-  volume: string;
-  tokenAddress: string;
-  sender: {
-    id: string;
-  };
-}
-
-interface Bounty {
-  deposits: Deposit[];
-}
-
 const getOnChainData = async (address: string) => {
   /**
    *

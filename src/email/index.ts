@@ -33,15 +33,24 @@ async function email(body: ClaimEvent, res: Response) {
   const abiCoder = new ethers.utils.AbiCoder();
   const abiCodedData = abiCoder.decode(['address', 'string', 'address', 'string'], body.data);
   const githubUser = abiCodedData[1];
-  const getData = async (issueId: string) => {
-    const onChainData = await getOnChainData(issueId);
-    onChainData.deposits.forEach((deposit: Deposit) => {
-      sendInvoice(deposit, githubUser, body.closer, res);
-    });
-    return { ...onChainData };
-  };
 
-  await getData(issueId);
+  if (body.bountyType.hex === '0x00') {
+    const onChainData = await getOnChainData(issueId);
+    const deposits = onChainData.deposits;
+    deposits.forEach((deposit: Deposit) => {
+      sendInvoice(deposit, githubUser, body.closer, res, deposit.id, deposit.sender.id);
+    });
+  } else {
+    // big number to string
+    const volume = ethers.BigNumber.from(body.volume.hex).toString();
+    const tokenBalance = {
+      tokenAddress: body.tokenAddress,
+      volume: volume,
+    };
+    const onChainData = await getOnChainData(issueId);
+    const invoiceId = onChainData.id + body.closer + body.payoutTime.hex;
+    sendInvoice(tokenBalance, githubUser, body.closer, res, invoiceId, onChainData.issuer.id);
+  }
 }
 
 export default email;

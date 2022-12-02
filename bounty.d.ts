@@ -6,8 +6,13 @@ interface Deposit extends TokenBalance {
 }
 
 interface Bounty {
+  id: string;
+  issuer: {
+    id: string;
+  };
   deposits: Deposit[];
 }
+
 interface TokenBalance {
   volume: string;
   tokenAddress: string;

@@ -3,6 +3,10 @@ const GET_BOUNTY = `
 		$address: String!
 	)   {
   bounty(id:$address){
+  id
+  issuer{
+    id
+	  }
     deposits{
 		id
       sender{id}

@@ -2,7 +2,7 @@ import type { Response } from 'express';
 import fs from 'fs';
 import nodemailer from 'nodemailer';
 
-const sendPdf = async (clientData: User, freelancerData: User, depositId: string, res: Response) => {
+const sendEmail = async (clientData: User, freelancerData: User, depositId: string, res: Response) => {
   let transporter = nodemailer.createTransport({
     host: 'mail.privateemail.com',
     port: 465,
@@ -55,4 +55,4 @@ const sendPdf = async (clientData: User, freelancerData: User, depositId: string
   }
 };
 
-export default sendPdf;
+export default sendEmail;
