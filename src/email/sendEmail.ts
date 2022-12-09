@@ -1,8 +1,7 @@
-import type { Response } from 'express';
 import fs from 'fs';
 import nodemailer from 'nodemailer';
 
-const sendEmail = async (clientData: User, freelancerData: User, depositId: string, res: Response) => {
+const sendEmail = async (clientData: User, freelancerData: User, depositId: string) => {
   let transporter = nodemailer.createTransport({
     host: 'mail.privateemail.com',
     port: 465,
@@ -49,7 +48,6 @@ const sendEmail = async (clientData: User, freelancerData: User, depositId: stri
         return;
       }
     });
-    res.json({ message: 'Email sent' });
   } catch (e) {
     console.log(e);
   }

@@ -1,12 +1,10 @@
 import getOffChainData from './getOffChainData.js';
 import createPdf from './createPdf.js';
 import sendPdf from './sendEmail.js';
-import type { Response } from 'express';
 const sendInvoice = async (
   deposit: Deposit,
   githubUser: string,
   freelancerAddress: string,
-  res: Response,
   invoiceId: string,
   invoiceNumber: number
 ) => {
@@ -16,8 +14,10 @@ const sendInvoice = async (
   // UPDATE THIS TO BE THE github user githubId.
   const freelancerData = await getOffChainData(githubUser, '');
   const freelancerInvoiceNumber = freelancerData.invoiceNumber + invoiceNumber;
-  await createPdf([deposit], freelancerData, freelancerInvoiceNumber, clientData, freelancerAddress, invoiceId);
-
-  await sendPdf(clientData, freelancerData, invoiceId, res);
+  await createPdf([deposit], freelancerData, freelancerInvoiceNumber, clientData, freelancerAddress, invoiceId).then(
+    async () => {
+      await sendPdf(clientData, freelancerData, invoiceId);
+    }
+  );
 };
 export default sendInvoice;

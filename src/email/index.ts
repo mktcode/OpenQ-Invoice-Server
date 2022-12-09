@@ -26,11 +26,22 @@ async function email(body: ClaimEvent, res: Response) {
   const githubUser = abiCodedData[1];
 
   const onChainData = await getOnChainData(issueId);
+
   const deposits = onChainData.deposits;
   if (body.bountyType.hex === '0x00') {
-    deposits.forEach((deposit: Deposit, index: number) => {
-      sendInvoice(deposit, githubUser, body.closer, res, deposit.id, index);
-    });
+    // iterate over deposits
+
+    for (let i = 0; i < deposits.length; i++) {
+      const deposit = deposits[i]!;
+      // if last deposit, res.json then send invoice
+      if (i === deposits.length - 1) {
+        sendInvoice(deposit, githubUser, body.closer, onChainData.id, i).then(() => {
+          res.json({ message: 'Email sent' });
+        });
+      } else {
+        sendInvoice(deposit, githubUser, body.closer, onChainData.id, i);
+      }
+    }
   } else if (deposits.length > 0) {
     // big number to string
     const volume = ethers.BigNumber.from(body.volume.hex).toString();
@@ -43,7 +54,9 @@ async function email(body: ClaimEvent, res: Response) {
       volume: volume,
     };
     const invoiceId = onChainData.id + body.closer + body.payoutTime.hex;
-    sendInvoice(tokenBalance, githubUser, body.closer, res, invoiceId, 0);
+    await sendInvoice(tokenBalance, githubUser, body.closer, invoiceId, 0).then(() => {
+      res.json({ message: 'Email sent' });
+    });
   }
 }
 
