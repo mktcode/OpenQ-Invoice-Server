@@ -11,6 +11,7 @@ const GET_BOUNTY = `
 		id
       sender{id}
       tokenAddress
+      funderUuid
       volume
     }
   } 

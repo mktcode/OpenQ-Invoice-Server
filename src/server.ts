@@ -1,4 +1,5 @@
 import express, { Express, Request, Response } from 'express';
+import axios from 'axios';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 
@@ -9,6 +10,9 @@ const server = () => {
   dotenv.config();
   const jsonParser = bodyParser.json();
 
+  const apiSecret: string = process.env['OPENQ_API_SECRET']!;
+  axios.defaults.headers.common['Authorization'] = apiSecret;
+
   const app: Express = express();
   const port: string = process.env['PORT']!;
 
@@ -17,12 +21,14 @@ const server = () => {
   });
   app.post('/email', jsonParser, (req: Request, res: Response) => {
     const { body } = req;
+    console.log(body);
     try {
       email(body, res);
     } catch (e) {
       console.log(e, 'could not send email');
     }
   });
+
   app.get('/preview', jsonParser, async (req, res) => {
     const account: string = req.query['account'] as string;
 

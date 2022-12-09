@@ -17,15 +17,6 @@ interface ClaimEvent {
   version: { hex: string };
 }
 
-interface Deposit {
-  id: string;
-  volume: string;
-  tokenAddress: string;
-  sender: {
-    id: string;
-  };
-}
-
 // async..await is not allowed in global scope, must use a wrapper
 async function email(body: ClaimEvent, res: Response) {
   const issueId = body.bountyAddress;
@@ -34,22 +25,25 @@ async function email(body: ClaimEvent, res: Response) {
   const abiCodedData = abiCoder.decode(['address', 'string', 'address', 'string'], body.data);
   const githubUser = abiCodedData[1];
 
+  const onChainData = await getOnChainData(issueId);
+  const deposits = onChainData.deposits;
   if (body.bountyType.hex === '0x00') {
-    const onChainData = await getOnChainData(issueId);
-    const deposits = onChainData.deposits;
-    deposits.forEach((deposit: Deposit) => {
-      sendInvoice(deposit, githubUser, body.closer, res, deposit.id, deposit.sender.id);
+    deposits.forEach((deposit: Deposit, index: number) => {
+      sendInvoice(deposit, githubUser, body.closer, res, deposit.id, index);
     });
-  } else {
+  } else if (deposits.length > 0) {
     // big number to string
     const volume = ethers.BigNumber.from(body.volume.hex).toString();
+    const firstDeposit = deposits[0]!;
     const tokenBalance = {
+      funderUuid: firstDeposit.funderUuid,
+      sender: { id: firstDeposit.sender.id },
+      id: firstDeposit.id,
       tokenAddress: body.tokenAddress,
       volume: volume,
     };
-    const onChainData = await getOnChainData(issueId);
     const invoiceId = onChainData.id + body.closer + body.payoutTime.hex;
-    sendInvoice(tokenBalance, githubUser, body.closer, res, invoiceId, onChainData.issuer.id);
+    sendInvoice(tokenBalance, githubUser, body.closer, res, invoiceId, 0);
   }
 }
 

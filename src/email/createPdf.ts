@@ -7,6 +7,7 @@ import fs from 'fs';
 const createPdf = async (
   tokenBalances: TokenBalance[],
   freelancerData: User,
+  freelancerInvoiceNumber: number,
   clientData: User,
   freelancerAddress: string,
   depositId: string
@@ -30,7 +31,7 @@ const createPdf = async (
     const leftPadding = 60;
     let topPadding = 40;
     doc.font('Helvetica-Bold');
-    const invoiceNumber = `Invoice No. ${freelancerData.invoiceNumber?.toString()}`;
+    const invoiceNumber = `Invoice No. ${freelancerInvoiceNumber?.toString()}`;
     doc.text(invoiceNumber, leftPadding, (topPadding += 10));
     doc.fontSize(12);
     doc.text(clientData.billingName, leftPadding, (topPadding += 40));
@@ -70,10 +71,7 @@ const createPdf = async (
 
       prepareRow: (_row: string[], _indexColumn: number, indexRow: number, rectRow: any) => {
         const correctRow = { ...rectRow, x: parseInt(rectRow.x) - 12, y: parseInt(rectRow.y) - 8 };
-        console.log(correctRow);
         doc.font('Helvetica').moveDown();
-        console.log(0 === indexRow);
-
         if (indexRow === 0) {
           doc.addBackground(correctRow, 'grey');
           doc.fontSize(16).moveDown(5);

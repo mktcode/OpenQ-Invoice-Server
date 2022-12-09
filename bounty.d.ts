@@ -1,5 +1,6 @@
 interface Deposit extends TokenBalance {
   id: string;
+  funderUuid: string;
   sender: {
     id: string;
   };

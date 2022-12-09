@@ -27,9 +27,11 @@ const sendSample = async (deposit: Deposit, githubUser: string, freelancerAddres
     postalCode: 'N1N 1N1',
   };
   console.log(githubUser);
-  const freelancerData = await getOffChainData(freelancerAddress);
+  const actualGithubUser = 'MDQ6VXNlcjcyMTU2Njc5';
+  const freelancerData = await getOffChainData(actualGithubUser, '');
   console.log(freelancerData);
-  await createPdf([deposit], freelancerData, clientData, freelancerAddress, deposit.id);
+
+  await createPdf([deposit], freelancerData, 2, clientData, freelancerAddress, deposit.id);
   var stream = fs.createReadStream(`tmp/sample-${freelancerAddress}.pdf`);
   var filename = 'WhateverFilenameYouWant.pdf';
   // Be careful of special characters

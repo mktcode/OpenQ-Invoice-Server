@@ -7,7 +7,7 @@ const getOnChainData = async (address: string) => {
    *
    * @param {*} sortOrder
    * @param {skip for offset based pagination} startAt
-   * @param {barch size} quantity
+   * @param {batch size} quantity
    * @returns
    */
 

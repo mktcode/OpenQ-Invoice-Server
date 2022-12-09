@@ -1,11 +1,11 @@
 const GET_USER = `
 	query getUser(
-		$address: String!
+		$github: String,
+        $uuid: String
 	) {
-  user(address: $address){  
+  user(github: $github, id: $uuid){  
 	watchedBountyIds
 	github
-	address
 	email
 	company
 	email
@@ -25,9 +25,7 @@ const GET_USER = `
 	vatRate
 	memo    
   }
-  
-  
-}
+  }
 `;
 
 export default GET_USER;

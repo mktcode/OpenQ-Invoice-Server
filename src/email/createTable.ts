@@ -18,7 +18,7 @@ const createTable = async (tokenBalances: TokenBalance[], freelancerData: User) 
   for (let key in tokenPrices) {
     const totalPrice = tokenPrices[key] as number;
     priceTotalWithTax += totalPrice;
-    const taxPrice = totalPrice / (1 + freelancerData.vatRate);
+    const taxPrice = freelancerData.vatRate > 0 ? totalPrice / (1 + freelancerData.vatRate) : 0;
     priceTotalTax += taxPrice;
     const preTaxPrice = totalPrice - taxPrice;
     const tokenBalanceRow = [formatCurrency(preTaxPrice), `${freelancerData.vatRate}%`, formatCurrency(preTaxPrice)];

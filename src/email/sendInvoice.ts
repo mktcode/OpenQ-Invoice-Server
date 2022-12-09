@@ -1,21 +1,22 @@
 import getOffChainData from './getOffChainData.js';
 import createPdf from './createPdf.js';
 import sendPdf from './sendEmail.js';
-import { ethers } from 'ethers';
 import type { Response } from 'express';
 const sendInvoice = async (
-  deposit: TokenBalance,
+  deposit: Deposit,
   githubUser: string,
   freelancerAddress: string,
   res: Response,
   invoiceId: string,
-  clientAddress: string
+  invoiceNumber: number
 ) => {
-  const checksummedAddress = ethers.utils.getAddress(clientAddress);
-  console.log(githubUser);
-  const clientData = await getOffChainData(checksummedAddress);
-  const freelancerData = await getOffChainData(freelancerAddress);
-  await createPdf([deposit], freelancerData, clientData, freelancerAddress, invoiceId);
+  // UPDATE THIS TO THE UUID OF THE CLIENT
+  const uuid = deposit.funderUuid;
+  const clientData = await getOffChainData('', uuid);
+  // UPDATE THIS TO BE THE github user githubId.
+  const freelancerData = await getOffChainData(githubUser, '');
+  const freelancerInvoiceNumber = freelancerData.invoiceNumber + invoiceNumber;
+  await createPdf([deposit], freelancerData, freelancerInvoiceNumber, clientData, freelancerAddress, invoiceId);
 
   await sendPdf(clientData, freelancerData, invoiceId, res);
 };
