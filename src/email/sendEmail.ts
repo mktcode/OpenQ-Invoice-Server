@@ -2,6 +2,8 @@ import fs from 'fs';
 import nodemailer from 'nodemailer';
 
 const sendEmail = async (clientData: User, freelancerData: User, depositId: string) => {
+  console.log(freelancerData, 'freelancerData');
+  console.log(clientData, 'clientData');
   let transporter = nodemailer.createTransport({
     host: 'mail.privateemail.com',
     port: 465,
@@ -20,7 +22,7 @@ const sendEmail = async (clientData: User, freelancerData: User, depositId: stri
       html: '<p>Here is an invoice for work completed for you on OpenQ.</p>',
       attachments: [
         {
-          filename: `invoice_${freelancerData.invoiceNumber}.pdf`,
+          filename: `invoice_${freelancerData?.invoiceNumber}.pdf`,
           path: `./tmp/${depositId}.pdf`,
         },
       ], // html body

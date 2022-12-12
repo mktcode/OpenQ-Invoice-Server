@@ -13,7 +13,10 @@ const sendInvoice = async (
   const clientData = await getOffChainData('', uuid);
   // UPDATE THIS TO BE THE github user githubId.
   const freelancerData = await getOffChainData(githubUser, '');
-  const freelancerInvoiceNumber = freelancerData.invoiceNumber + invoiceNumber;
+  if (typeof freelancerData === null || typeof clientData === null) {
+    return;
+  }
+  const freelancerInvoiceNumber = freelancerData?.invoiceNumber + invoiceNumber;
   await createPdf([deposit], freelancerData, freelancerInvoiceNumber, clientData, freelancerAddress, invoiceId).then(
     async () => {
       await sendPdf(clientData, freelancerData, invoiceId);

@@ -32,7 +32,7 @@ const server = () => {
   app.get('/preview', jsonParser, async (req, res) => {
     const githubId: string = req.query['githubId'] as string;
     const account: string = req.query['githubId'] as string;
-
+    if (!githubId || !account) res.send('missing githubId or account');
     const body = {
       bountyId: 'I_kwDOGWnnz85Utn1m',
       bountyAddress: '0x001192fa1ea7a2816445ec2efd5843c1a60562aa',
@@ -46,10 +46,8 @@ const server = () => {
       version: { type: 'BigNumber', hex: '0x01' },
     };
     try {
-      console.log(req.query, 'query');
       await sample(body, res, githubId);
     } catch (e) {
-      console.log(req.query, 'query');
       console.log(e, 'could not produce preview');
     }
   });
