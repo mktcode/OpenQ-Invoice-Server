@@ -11,6 +11,7 @@ interface Bounty {
   issuer: {
     id: string;
   };
+  invoiceable: boolean | null | undefined;
   deposits: Deposit[];
 }
 

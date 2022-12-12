@@ -28,6 +28,9 @@ async function email(body: ClaimEvent, res: Response) {
   const onChainData = await getOnChainData(issueId);
 
   const deposits = onChainData.deposits;
+  if (!onChainData.invoiceable) {
+    res.json({ message: 'Not invoiceable' });
+  }
   if (body.bountyType.hex === '0x00') {
     // iterate over deposits
 
