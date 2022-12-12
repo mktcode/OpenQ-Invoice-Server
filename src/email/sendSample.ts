@@ -27,8 +27,7 @@ const sendSample = async (deposit: Deposit, githubUser: string, freelancerAddres
     postalCode: 'N1N 1N1',
   };
   console.log(githubUser);
-  const actualGithubUser = 'MDQ6VXNlcjcyMTU2Njc5';
-  const freelancerData = await getOffChainData(actualGithubUser, '');
+  const freelancerData = await getOffChainData(githubUser, '');
   console.log(freelancerData);
 
   await createPdf([deposit], freelancerData, 2, clientData, freelancerAddress, deposit.id);

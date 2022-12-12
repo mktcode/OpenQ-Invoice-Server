@@ -1,7 +1,6 @@
 'use strict';
 import getOnChainData from './getOnChainData.js';
 import sendSample from './sendSample.js';
-import { ethers } from 'ethers';
 import type { Response } from 'express';
 
 interface ClaimEvent {
@@ -18,12 +17,9 @@ interface ClaimEvent {
 }
 
 // async..await is not allowed in global scope, must use a wrapper
-const sample = async (body: ClaimEvent, res: Response) => {
+const sample = async (body: ClaimEvent, res: Response, githubId: string) => {
   const issueId = body.bountyAddress;
 
-  const abiCoder = new ethers.utils.AbiCoder();
-  const abiCodedData = abiCoder.decode(['address', 'string', 'address', 'string'], body.data);
-  const githubUser = abiCodedData[1];
   const getData = async (issueId: string) => {
     const onChainData = await getOnChainData(issueId);
     const deposit: Deposit = {
@@ -33,7 +29,7 @@ const sample = async (body: ClaimEvent, res: Response) => {
       volume: '45000000000000000000',
       funderUuid: '0x1ccc33d06c9e6f1953fda9e26f99c70dc848e18d4479aef37d95b94070845355',
     };
-    await sendSample(deposit, githubUser, body.closer, res);
+    await sendSample(deposit, githubId, body.closer, res);
 
     return { ...onChainData };
   };

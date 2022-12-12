@@ -30,7 +30,8 @@ const server = () => {
   });
 
   app.get('/preview', jsonParser, async (req, res) => {
-    const account: string = req.query['account'] as string;
+    const githubId: string = req.query['githubId'] as string;
+    const account: string = req.query['githubId'] as string;
 
     const body = {
       bountyId: 'I_kwDOGWnnz85Utn1m',
@@ -45,8 +46,10 @@ const server = () => {
       version: { type: 'BigNumber', hex: '0x01' },
     };
     try {
-      await sample(body, res);
+      console.log(req.query, 'query');
+      await sample(body, res, githubId);
     } catch (e) {
+      console.log(req.query, 'query');
       console.log(e, 'could not produce preview');
     }
   });
