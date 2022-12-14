@@ -4,6 +4,7 @@ const GET_BOUNTY = `
 	)   {
   bounty(id:$address){
   id
+  invoiceable
   issuer{
     id
 	  }
