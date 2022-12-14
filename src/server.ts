@@ -31,7 +31,7 @@ const server = () => {
 
   app.get('/preview', jsonParser, async (req, res) => {
     const githubId: string = req.query['githubId'] as string;
-    const account: string = req.query['githubId'] as string;
+    const account: string = req.query['account'] as string;
 
     const body = {
       bountyId: 'I_kwDOGWnnz85Utn1m',
