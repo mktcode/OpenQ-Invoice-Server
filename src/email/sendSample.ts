@@ -14,7 +14,7 @@ const sendSample = async (deposit: Deposit, githubUser: string, freelancerAddres
     country: 'Test Country',
     phoneNumber: 'Test Phone Number',
     province: 'Test Province',
-    email: 'email@example.com',
+    invoicingEmail: 'email@example.com',
     invoiceNumber: 1,
     taxId: 'test tax id',
     vatNumber: 'test vat number',
