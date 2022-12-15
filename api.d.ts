@@ -7,7 +7,7 @@ interface User {
   country: string;
   phoneNumber: string;
   province: string;
-  email: string;
+  invoicingEmail: string;
   invoiceNumber: number;
   taxId: string;
   vatNumber: string;

@@ -38,8 +38,8 @@ const createPdf = async (
     doc.text(freelancerData.billingName, 400, topPadding);
 
     doc.font('Helvetica');
-    doc.text(clientData.email, leftPadding, (topPadding += 16));
-    doc.text(freelancerData.email, 400, topPadding);
+    doc.text(clientData.invoicingEmail, leftPadding, (topPadding += 16));
+    doc.text(freelancerData.invoicingEmail, 400, topPadding);
     doc.text(clientData.streetAddress, leftPadding, (topPadding += 16));
 
     doc.text(clientData.country, leftPadding, (topPadding += 16));

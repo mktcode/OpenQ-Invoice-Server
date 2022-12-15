@@ -16,7 +16,7 @@ const sendEmail = async (clientData: User, freelancerData: User, depositId: stri
   try {
     let messageToClient = await transporter.sendMail({
       from: process.env['EMAIL_USERNAME'], // sender address
-      to: clientData.email, // list of receivers
+      to: clientData.invoicingEmail, // list of receivers
       subject: 'Invoice', // Subject line
       text: 'Here is an invoice for work completed for you on OpenQ.', // plain text body
       html: '<p>Here is an invoice for work completed for you on OpenQ.</p>',
@@ -30,10 +30,10 @@ const sendEmail = async (clientData: User, freelancerData: User, depositId: stri
 
     let messageToFreelancer = await transporter.sendMail({
       from: process.env['EMAIL_USERNAME'], // sender address
-      to: freelancerData.email, // list of receivers
+      to: freelancerData.invoicingEmail, // list of receivers
       subject: 'Invoice', // Subject line
-      text: `Here is a copy of your invoice sent to ${clientData.email} for work completed by you on OpenQ.`, // plain text body
-      html: `<p>Here is a copy of your invoice sent to ${clientData.email} for work completed by you on OpenQ.</p>`,
+      text: `Here is a copy of your invoice sent to ${clientData.invoicingEmail} for work completed by you on OpenQ.`, // plain text body
+      html: `<p>Here is a copy of your invoice sent to ${clientData.invoicingEmail} for work completed by you on OpenQ.</p>`,
       attachments: [
         {
           filename: `invoice_${freelancerData.invoiceNumber}.pdf`,

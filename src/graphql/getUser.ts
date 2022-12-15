@@ -6,9 +6,8 @@ const GET_USER = `
   user(github: $github, id: $uuid){  
 	watchedBountyIds
 	github
-	email
 	company
-	email
+	invoicingEmail
 	city
 	streetAddress
 	country
