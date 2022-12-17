@@ -5,5 +5,5 @@ RUN apk update && apk upgrade && \
 COPY package.json .
 RUN yarn
 COPY . .
-RUN mkdir tmp
+RUN mkdir -p tmp
 ENTRYPOINT yarn dev
