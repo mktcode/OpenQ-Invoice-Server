@@ -19,6 +19,8 @@ interface ClaimEvent {
 // async..await is not allowed in global scope, must use a wrapper
 const sample = async (body: ClaimEvent, res: Response, githubId: string) => {
   const issueId = body.bountyAddress;
+  const closer = body.closer;
+	console.log(closer)
 
   const getData = async (issueId: string) => {
     const onChainData = await getOnChainData(issueId);
