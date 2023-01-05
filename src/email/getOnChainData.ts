@@ -13,14 +13,11 @@ const getOnChainData = async (address: string) => {
 
   try {
     const lowerCaseAddress = address.toLowerCase();
-    console.log('address', lowerCaseAddress);
     const url: string = process.env['OPENQ_SUBGRAPH_HTTP_URL']!;
-    console.log('url', url);
     const result: AxiosResponse = await axios.post(url, {
       query: GET_BOUNTY,
       variables: { address: lowerCaseAddress },
     });
-    console.log(result.data.toString(), 'results');
     const bounty = result.data.data.bounty as Bounty;
     return bounty;
   } catch (err: any) {
