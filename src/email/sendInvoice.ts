@@ -12,6 +12,7 @@ const sendInvoice = async (
   const uuid = deposit.funderUuid;
   const clientData = await getOffChainData('', uuid);
   // UPDATE THIS TO BE THE github user githubId.
+  console.log(githubUser, 'github user');
   const freelancerData = await getOffChainData(githubUser, '');
   if (typeof freelancerData === null || typeof clientData === null) {
     return;

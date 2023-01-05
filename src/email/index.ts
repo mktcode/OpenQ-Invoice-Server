@@ -22,7 +22,7 @@ async function email(body: ClaimEvent, res: Response) {
   const issueId = body.bountyAddress;
 
   const abiCoder = new ethers.utils.AbiCoder();
-  console.log(body.data);
+  console.log('start of abi data ', body.data, ' end of abi data');
   const abiCodedData = abiCoder.decode(['address', 'string', 'address', 'string'], body.data);
   const githubUser = abiCodedData[1];
 
