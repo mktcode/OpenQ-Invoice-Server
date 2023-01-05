@@ -24,8 +24,8 @@ const server = () => {
     //console.log(req);
     console.log(body);
     const mockBody = {
-      bountyId: 'I_kwDOGWnnz85Utn1m',
-      bountyAddress: '0x001192fa1ea7a2816445ec2efd5843c1a60562aa',
+      bountyId: 'I_kwDOGWnnz85apYhU',
+      bountyAddress: '0xb5d4d351baf0ae5c70ff09f25e054ec48fd70acf',
       organization: 'MDEyOk9yZ2FuaXphdGlvbjc3NDAyNTM4',
       closer: '0xa7b7DcBb35A58294Ba9E51cC9AA20670E124536b',
       payoutTime: { type: 'BigNumber', hex: '0x63861f57' },
