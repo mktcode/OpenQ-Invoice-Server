@@ -22,6 +22,7 @@ async function email(body: ClaimEvent, res: Response) {
   const issueId = body.bountyAddress;
 
   const abiCoder = new ethers.utils.AbiCoder();
+  console.log(body.data);
   const abiCodedData = abiCoder.decode(['address', 'string', 'address', 'string'], body.data);
   const githubUser = abiCodedData[1];
 
@@ -47,6 +48,7 @@ async function email(body: ClaimEvent, res: Response) {
       }
     } else if (deposits.length > 0) {
       // big number to string
+      console.log(body.volume.hex);
       const volume = ethers.BigNumber.from(body.volume.hex).toString();
       const firstDeposit = deposits[0]!;
       const tokenBalance = {
