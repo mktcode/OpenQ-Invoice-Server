@@ -48,7 +48,7 @@ async function email(body: ClaimEvent, res: Response) {
       }
     } else if (deposits.length > 0) {
       // big number to string
-      console.log(body.volume.hex);
+      console.log(JSON.stringify(body.volume));
       const volume = ethers.BigNumber.from(body.volume.hex).toString();
       const firstDeposit = deposits[0]!;
       const tokenBalance = {

@@ -19,7 +19,7 @@ const getToken = (address: string) => {
       openqIndexableTokens = polygonMainnetIndexable;
       break;
   }
-
+  console.log(address);
   const checkSummedAddress = ethers.utils.getAddress(address);
   const indexableLowerCaseAddress = indexable[address.toLowerCase() as keyof typeof indexable];
   if (indexableLowerCaseAddress) {
