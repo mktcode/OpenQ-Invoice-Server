@@ -2,8 +2,6 @@ import fs from 'fs';
 import nodemailer from 'nodemailer';
 
 const sendEmail = async (clientData: User, freelancerData: User, depositId: string) => {
-  console.log(freelancerData, 'freelancerData');
-  console.log(clientData, 'clientData');
   let transporter = nodemailer.createTransport({
     host: 'mail.privateemail.com',
     port: 465,

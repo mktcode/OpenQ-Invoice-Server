@@ -26,9 +26,7 @@ const sendSample = async (deposit: Deposit, githubUser: string, freelancerAddres
     watchedBountyIds: [],
     postalCode: 'N1N 1N1',
   };
-  console.log(githubUser);
   const freelancerData = await getOffChainData(githubUser, '');
-  console.log(freelancerData);
 
   await createPdf([deposit], freelancerData, 2, clientData, freelancerAddress, deposit.id);
   var stream = fs.createReadStream(`tmp/sample-${freelancerAddress}.pdf`);

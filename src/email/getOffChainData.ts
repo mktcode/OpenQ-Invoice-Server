@@ -6,7 +6,6 @@ const getOffChainData = async (github: string, uuid: string) => {
   const uuidObj = uuid ? { uuid } : {};
   try {
     const url: string = process.env['OPENQ_API_URL']!;
-    console.log('offURl', url, github);
     const result: AxiosResponse = await axios.post(`${url}/graphql`, {
       query: GET_USER,
 
