@@ -36,10 +36,11 @@ const server = () => {
       version: { type: 'BigNumber', hex: '0x01' },
     };
     try {
+      console.log('mockBody', mockBody);
       email(mockBody, res);
     } catch (e) {
       console.log(e, 'could not send email');
-      res.json({ status: 'could not send email' });
+      //    res.json({ status: 'could not send email' });
     }
   });
 
