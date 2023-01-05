@@ -15,7 +15,7 @@ const getOnChainData = async (address: string) => {
     const lowerCaseAddress = address.toLowerCase();
     console.log('address', lowerCaseAddress);
     const url: string = process.env['OPENQ_SUBGRAPH_HTTP_URL']!;
-    console.log('url');
+    console.log('url', url);
     const result: AxiosResponse = await axios.post(url, {
       query: GET_BOUNTY,
       variables: { address: lowerCaseAddress },
