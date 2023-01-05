@@ -11,9 +11,11 @@ const sendInvoice = async (
   // UPDATE THIS TO THE UUID OF THE CLIENT
   const uuid = deposit.funderUuid;
   const clientData = await getOffChainData('', uuid);
+  console.log('clientData', clientData);
   // UPDATE THIS TO BE THE github user githubId.
   console.log(githubUser, 'github user');
   const freelancerData = await getOffChainData(githubUser, '');
+  console.log('freelancerData', freelancerData);
   if (typeof freelancerData === null || typeof clientData === null) {
     return;
   }

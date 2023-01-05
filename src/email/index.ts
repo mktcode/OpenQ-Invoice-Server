@@ -20,10 +20,9 @@ interface ClaimEvent {
 // async..await is not allowed in global scope, must use a wrapper
 async function email(body: ClaimEvent, res: Response) {
   const issueId = body.bountyAddress;
-
   const abiCoder = new ethers.utils.AbiCoder();
-  console.log('start of abi data ', body.data, ' end of abi data');
   const abiCodedData = abiCoder.decode(['address', 'string', 'address', 'string'], body.data);
+  console.log(abiCodedData, 'abiCodedData');
   const githubUser = abiCodedData[1];
 
   const onChainData = await getOnChainData(issueId);
@@ -36,6 +35,7 @@ async function email(body: ClaimEvent, res: Response) {
       // iterate over deposits
 
       for (let i = 0; i < deposits.length; i++) {
+        console.log('sending invoice');
         const deposit = deposits[i]!;
         // if last deposit, res.json then send invoice
         if (i === deposits.length - 1) {

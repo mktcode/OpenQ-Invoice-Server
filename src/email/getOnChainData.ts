@@ -20,7 +20,7 @@ const getOnChainData = async (address: string) => {
       query: GET_BOUNTY,
       variables: { address: lowerCaseAddress },
     });
-    console.log(result.data);
+    console.log(result.data, 'results');
     const bounty = result.data.data.bounty as Bounty;
     return bounty;
   } catch (err: any) {
