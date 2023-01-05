@@ -21,7 +21,7 @@ const server = () => {
   });
   app.post('/email', jsonParser, (req: Request, res: Response) => {
     const { body } = req;
-    console.log(JSON.stringify(req));
+    console.log(req);
     console.log(body);
     const mockBody = {
       bountyId: 'I_kwDOGWnnz85Utn1m',
