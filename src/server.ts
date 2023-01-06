@@ -21,11 +21,11 @@ const server = () => {
   });
   app.post('/email', jsonParser, (req: Request, res: Response) => {
     const { body } = req;
-    console.log(body);
     try {
       email(body, res);
     } catch (e) {
       console.log(e, 'could not send email');
+      //    res.json({ status: 'could not send email' });
     }
   });
 

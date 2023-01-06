@@ -1,6 +1,6 @@
 import getOffChainData from './getOffChainData.js';
 import createPdf from './createPdf.js';
-import sendPdf from './sendEmail.js';
+import sendEmail from './sendEmail.js';
 const sendInvoice = async (
   deposit: Deposit,
   githubUser: string,
@@ -19,7 +19,7 @@ const sendInvoice = async (
   const freelancerInvoiceNumber = freelancerData?.invoiceNumber + invoiceNumber;
   await createPdf([deposit], freelancerData, freelancerInvoiceNumber, clientData, freelancerAddress, invoiceId).then(
     async () => {
-      await sendPdf(clientData, freelancerData, invoiceId);
+      await sendEmail(clientData, freelancerData, invoiceId);
     }
   );
 };

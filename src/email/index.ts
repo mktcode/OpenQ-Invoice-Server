@@ -9,18 +9,16 @@ interface ClaimEvent {
   bountyAddress: string;
   organization: string;
   closer: string;
-  payoutTime: { hex: string };
+  payoutTime: string;
   tokenAddress: string;
-  volume: { hex: string };
-  bountyType: { hex: string };
+  volume: string;
+  bountyType: string;
   data: string;
-  version: { hex: string };
 }
 
 // async..await is not allowed in global scope, must use a wrapper
 async function email(body: ClaimEvent, res: Response) {
   const issueId = body.bountyAddress;
-
   const abiCoder = new ethers.utils.AbiCoder();
   const abiCodedData = abiCoder.decode(['address', 'string', 'address', 'string'], body.data);
   const githubUser = abiCodedData[1];
@@ -31,7 +29,7 @@ async function email(body: ClaimEvent, res: Response) {
   if (!onChainData.invoiceable) {
     res.json({ message: 'Not invoiceable' });
   } else {
-    if (body.bountyType.hex === '0x00') {
+    if (body.bountyType === '0') {
       // iterate over deposits
 
       for (let i = 0; i < deposits.length; i++) {
@@ -47,7 +45,7 @@ async function email(body: ClaimEvent, res: Response) {
       }
     } else if (deposits.length > 0) {
       // big number to string
-      const volume = ethers.BigNumber.from(body.volume.hex).toString();
+      const volume = ethers.BigNumber.from(body.volume).toString();
       const firstDeposit = deposits[0]!;
       const tokenBalance = {
         funderUuid: firstDeposit.funderUuid,
@@ -56,7 +54,7 @@ async function email(body: ClaimEvent, res: Response) {
         tokenAddress: body.tokenAddress,
         volume: volume,
       };
-      const invoiceId = onChainData.id + body.closer + body.payoutTime.hex;
+      const invoiceId = onChainData.id + body.closer + parseInt(body.payoutTime);
       await sendInvoice(tokenBalance, githubUser, body.closer, invoiceId, 0).then(() => {
         res.json({ message: 'Email sent' });
       });
